@@ -1,0 +1,3 @@
+camelCase
+catch request reponse
+locate api in one place
