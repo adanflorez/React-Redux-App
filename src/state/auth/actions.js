@@ -13,7 +13,6 @@ export const logOut = () => {
 };
 
 export const signUp = userData => {
-    console.log("singupAction");
     return { type: SIGN_UP, payload:userData };
 };
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Image, Item, Button, Icon } from "semantic-ui-react";
+import { Grid, Image, Item, Button, Divider } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import history from "../../utils/history";
 import defaultImage from "../../assets/images/defaultImage.png";
-
+import itemImage from "../../assets/images/item.png";
 // components
 import PhotoUploadModal from "../../shared/modals/PhotoUploadModal";
 import ItemForm from "./Item/ItemForm";
 
-const renderTittle = props => {
+const renderTittle = (props) => {
   if (!props.name) {
     return <h1>New</h1>;
   } else {
@@ -21,13 +21,12 @@ const renderItems = (items, editItem, loading) => {
     return <div></div>;
   }
 
-  let storeItems = items.map(item => {
+  let storeItems = items.map((item) => {
     return (
       <Item key={item.id}>
-        <Item.Image
-          size="tiny"
-          src="https://cdn.shopify.com/s/files/1/0272/4714/9155/products/Arjuna_800x.png?v=1571387672"
-        />
+        {item.image && <Item.Image size="tiny" src={item.image} rounded />}
+        {!item.image && <Item.Image size="tiny" src={itemImage} rounded />}
+
         <Item.Content>
           <Item.Header>{item.name}</Item.Header>
           <Item.Meta>
@@ -76,7 +75,7 @@ const renderItems = (items, editItem, loading) => {
   );
 };
 
-const StoreForm = props => {
+const StoreForm = (props) => {
   const { register, handleSubmit, errors } = useForm();
   const [image, setImage] = useState(undefined);
   const [itemFormOpen, setItemFormOpen] = useState(false);
@@ -86,17 +85,17 @@ const StoreForm = props => {
     setImage(props.image);
   }, [props.image]);
 
-  const saveImage = image => {
+  const saveImage = (image) => {
     setImage(image);
   };
 
-  const onSubmit = data => {
+  const onSubmit = (data) => {
     if (image !== props.image) {
       data.image = image;
     }
     props.onSubmitForm(data);
   };
-  const editItem = itemToEdit => {
+  const editItem = (itemToEdit) => {
     setItemFormOpen(true);
     if (itemToEdit) {
       setItem(itemToEdit);
@@ -200,6 +199,9 @@ const StoreForm = props => {
                 </div>
               )}
 
+              <h3>Items</h3>
+              <Divider />
+
               <Item.Group link divided>
                 {renderItems(props.currentItems, editItem, props.loading)}
               </Item.Group>
@@ -212,7 +214,7 @@ const StoreForm = props => {
                   props.loading ? "loading" : ""
                 }`}
                 style={{
-                  float: "right"
+                  float: "right",
                 }}
                 type="submit"
                 disabled={props.loading}
@@ -222,7 +224,7 @@ const StoreForm = props => {
               <button
                 className="ui button"
                 style={{
-                  float: "right"
+                  float: "right",
                 }}
                 onClick={() => {
                   history.push(`/dashboard/store`);

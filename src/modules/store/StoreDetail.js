@@ -5,6 +5,7 @@ import _ from "lodash";
 import history from "../../utils/history";
 
 import defaultImage from "../../assets/images/defaultImage.png";
+import itemImage from "../../assets/images/item.png";
 
 // components
 import StoreDetailPlaceHolder from "../../shared/placeholder/StoreDetailPlaceHolder";
@@ -12,15 +13,13 @@ import ConfirmModal from "../../shared/modals/ConfirmModal";
 // actions
 import { fetchStore, deleteStore, fetchItems } from "../../state/store/actions";
 
-const renderItems = items => {
+const renderItems = (items) => {
   if (items.length) {
-    return items.map(item => {
+    return items.map((item) => {
       return (
         <Item key={item.id}>
-          <Item.Image
-            size="tiny"
-            src="https://cdn.shopify.com/s/files/1/0272/4714/9155/products/Arjuna_800x.png?v=1571387672"
-          />
+          {item.image && <Image size="tiny" src={item.image} rounded />}
+          {!item.image && <Image size="tiny" src={itemImage} rounded />}
           <Item.Content>
             <Item.Header>{item.name}</Item.Header>
             <Item.Meta>
@@ -41,16 +40,16 @@ const renderItems = items => {
   }
 };
 
-const StoreDetail = props => {
+const StoreDetail = (props) => {
   useEffect(() => {
     props.fetchStore(props.match.params.id);
   }, []);
 
   useEffect(() => {
-      props.fetchItems(props.match.params.id);
+    props.fetchItems(props.match.params.id);
   }, []);
 
-  const deleteStore = id => {
+  const deleteStore = (id) => {
     props.deleteStore(id);
   };
 
@@ -83,7 +82,7 @@ const StoreDetail = props => {
             className="ui button positive"
             style={{
               float: "right",
-              display: props.user.user_id === props.store.user_id ? "" : "none"
+              display: props.user.user_id === props.store.user_id ? "" : "none",
             }}
             onClick={() => {
               history.push(`/dashboard/store/edit/${props.store.id}`);
@@ -93,7 +92,7 @@ const StoreDetail = props => {
             Edit
           </button>
           <ConfirmModal
-            onAccept={deleteStore}
+            onAccept={() => deleteStore(props.store.id)}
             tittle="Remove Store"
             description="Are you sure you want to remove this store ?"
           >
@@ -102,7 +101,7 @@ const StoreDetail = props => {
               style={{
                 float: "right",
                 display:
-                  props.user.user_id === props.store.user_id ? "" : "none"
+                  props.user.user_id === props.store.user_id ? "" : "none",
               }}
             >
               <i className="trash left icon"></i>
@@ -130,21 +129,21 @@ const mapStateToProps = (state, ownProps) => {
     user: state.user,
     store: _.find(state.store.stores, ["id", +ownProps.match.params.id]),
     loading: state.store.loading,
-    currentItems: state.store.currentItems
+    currentItems: state.store.currentItems,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    fetchStore: storeId => {
+    fetchStore: (storeId) => {
       dispatch(fetchStore(storeId));
     },
-    deleteStore: storeId => {
+    deleteStore: (storeId) => {
       dispatch(deleteStore(storeId));
     },
-    fetchItems: storeId => {
+    fetchItems: (storeId) => {
       dispatch(fetchItems(storeId));
-    }
+    },
   };
 };
 

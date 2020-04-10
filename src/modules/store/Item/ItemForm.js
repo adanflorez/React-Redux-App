@@ -1,16 +1,40 @@
-import React from "react";
-import { Modal, Button, Grid, Icon } from "semantic-ui-react";
+import React, { useState, useCallback, useEffect } from "react";
+import { Modal, Button, Grid, Message } from "semantic-ui-react";
 import { useForm } from "react-hook-form";
 import { connect } from "react-redux";
 
+import { useDropzone } from "react-dropzone";
+import ReactCrop from "react-image-crop";
 import { saveItem, updateItem, deleteItem } from "../../../state/store/actions";
 
-const ItemForm = props => {
+import "react-image-crop/dist/ReactCrop.css";
+
+const ItemForm = (props) => {
+  const [preview, setPreview] = useState(null);
+  const [currentImage, setCurrentImage] = useState(null);
+  const [crop, setCrop] = useState({ aspect: 4 / 4 });
+  const [croppedImage, setCroppedImage] = useState("");
+  const [imageRef, setImageRef] = useState({
+    image: undefined,
+    scaleX: 1,
+    scaleY: 1,
+  });
+  const [drag, setDrag] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    setCurrentImage(props.item.image);
+  }, [props.item]);
+
   const closeModal = () => {
+    setCroppedImage(undefined);
+    setPreview(undefined);
+    setCurrentImage(props.item.image);
     props.closeModal();
   };
 
-  const onSubmit = itemData => {
+  const onSubmit = (itemData) => {
+    itemData.image = croppedImage;
     if (!props.item.id) {
       itemData.store_id = props.storeId;
       props.saveItem(itemData);
@@ -22,12 +46,79 @@ const ItemForm = props => {
     closeModal();
   };
 
-  const onDeleteItem = itemId => {
+  const onImageLoaded = (image) => {
+    setCrop({ aspect: 4 / 4, width: image.width });
+
+    setImageRef({
+      image: image,
+      scaleX: image.naturalWidth / image.width,
+      scaleY: image.naturalHeight / image.height,
+    });
+    return false;
+  };
+
+  const onCropComplete = (crop) => {
+    if (imageRef.image && crop.width && crop.height) {
+      getCroppedImg(imageRef.image, crop).then((croppedImageUrl) => {
+        setCroppedImage(croppedImageUrl);
+      });
+    }
+  };
+
+  const getCroppedImg = (image, crop) => {
+
+    const canvas = document.createElement("canvas");
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width * scaleX;
+    canvas.height = crop.height * scaleY;
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width * scaleX,
+      crop.height * scaleY
+    );
+
+    // As Base64 string
+    return new Promise((resolve) => {
+      resolve(canvas.toDataURL("image/jpeg"));
+    });
+  };
+
+  const onDrop = useCallback((acceptedFiles) => {
+    setError(false);
+    let file = acceptedFiles[0];
+    let urlData = URL.createObjectURL(file);
+
+    var img = new Image();
+
+    img.onload = function () {
+      if (img.width < 512 || img.height < 512) {
+        setError(true);
+        setPreview(undefined);
+      } else {
+        setDrag(false);
+        setPreview(img.src);
+      }
+    };
+
+    img.src = urlData;
+  }, []);
+
+  const onDeleteItem = (itemId) => {
     props.deleteItem(itemId);
     closeModal();
   };
+    const { register, errors, handleSubmit } = useForm();
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const { register, errors, handleSubmit } = useForm();
   return (
     <Modal open={props.open}>
       <Modal.Header>Item Creation</Modal.Header>
@@ -40,8 +131,85 @@ const ItemForm = props => {
             <Grid.Row>
               <Grid.Column width={8}>
                 <Grid>
-                  <Grid.Row></Grid.Row>
-                  <Grid.Row></Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column>
+                      {currentImage && <img src={currentImage} />}
+                      {!preview && !currentImage && (
+                        <div
+                          {...getRootProps()}
+                          onDragOver={() => {
+                            setDrag(true);
+                          }}
+                          onDragLeave={() => {
+                            setDrag(false);
+                          }}
+                          style={{
+                            border: "3px dashed rgb(212, 212, 212)",
+                            borderRadius: "5px",
+                            backgroundColor: drag ? "grey" : "",
+                            minHeight: 256,
+                          }}
+                        >
+                          <input {...getInputProps()} />
+                          {isDragActive ? (
+                            <p>Drop the files here ...</p>
+                          ) : (
+                            <p>
+                              Drag 'n' drop some files here, or click to select
+                              files
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      {preview && !currentImage && (
+                        <ReactCrop
+                          src={preview}
+                          crop={crop}
+                          onChange={(newCrop) => setCrop(newCrop)}
+                          onComplete={onCropComplete}
+                          onImageLoaded={onImageLoaded}
+                          minHeight={512 / imageRef.scaleY}
+                          minWidth={512 / imageRef.scaleX}
+                          style={{
+                            left: "50%",
+                            transform: "translate(-50%, 0)",
+                            borderRadius: "5px",
+                            border: "1px solid black",
+                          }}
+                        />
+                      )}
+                      {error && (
+                        <Message negative>
+                          <Message.Header>
+                            We're sorry we can't upload this iamge
+                          </Message.Header>
+                          <p>
+                            Please provide an image with at least 512px, 512px.
+                          </p>
+                        </Message>
+                      )}
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column>
+                      <button
+                        onClick={() => {
+                          setCroppedImage("");
+                          setPreview(undefined);
+                          setImageRef({
+                            image: undefined,
+                            scaleX: 1,
+                            scaleY: 1,
+                          });
+                          setCurrentImage(null);
+                        }}
+                        className="ui button"
+                        type="button"
+                      >
+                        Remove
+                      </button>
+                    </Grid.Column>
+                  </Grid.Row>
                 </Grid>
               </Grid.Column>
               <Grid.Column width={8}>
@@ -118,6 +286,7 @@ const ItemForm = props => {
                   className="ui icon button negative"
                   type="button"
                   style={{ float: "right" }}
+                  disabled={!props.item.id}
                 >
                   <i className="trash icon"></i>
                 </button>
@@ -136,21 +305,21 @@ const ItemForm = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { state: state };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    saveItem: itemData => {
+    saveItem: (itemData) => {
       dispatch(saveItem(itemData));
     },
-    updateItem: itemData => {
+    updateItem: (itemData) => {
       dispatch(updateItem(itemData));
     },
-    deleteItem: itemId => {
+    deleteItem: (itemId) => {
       dispatch(deleteItem(itemId));
-    }
+    },
   };
 };
 

@@ -14,7 +14,7 @@ import AppStyle from './AppStyle.css';
 function App() {
   return (
     <>
-      <Router history={history}>
+      <Router history={history} basename={'/storewebapp'}>
         <Switch>
           <Route path="/" exact>
             <Redirect to="/dashboard" />

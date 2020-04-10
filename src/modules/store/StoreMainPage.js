@@ -60,7 +60,6 @@ const StoreMainPage = props => {
       return pos!==-1 || posDes!==-1
     });
   };
-  console.log("props", props);
 
   return (
     <div>
@@ -75,7 +74,7 @@ const StoreMainPage = props => {
           {tabs}
 
           <Menu.Menu position="right">
-            <Menu.Item>
+            <Menu.Item className="big-screen-component ">
               <Input
                 type="text"
                 transparent

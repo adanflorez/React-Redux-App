@@ -8,7 +8,6 @@ const CreateStore = props => {
     storeData.user_id = props.user.user_id;
     props.saveStore(storeData);
   };
-  console.log("Create Store", props);
   return <StoreForm onSubmitForm={onSubmit} loading ={props.loading} />;
 };
 
