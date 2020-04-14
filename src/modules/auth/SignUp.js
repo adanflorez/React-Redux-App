@@ -30,8 +30,8 @@ const SignUp = (props) => {
                   label="Name"
                   placeholder="Name"
                   error={
-                    errors.name && {
-                      content: "This field is required",
+                    errors.username && {
+                      content: errors.username.message,
                       pointing: "below",
                     }
                   }
@@ -40,11 +40,36 @@ const SignUp = (props) => {
               name="username"
               control={control}
               rules={{
-                required: true,
+                required: "This field is required",
               }}
               defaultValue=""
             />
-            
+            <Controller
+              as={
+                <Form.Field
+                  control={Input}
+                  label="Email"
+                  placeholder="Email"
+                  error={
+                    errors.email && {
+                      content: errors.email.message,
+                      pointing: "below",
+                    }
+                  }
+                />
+              }
+              name="email"
+              control={control}
+              rules={{
+                required: "This field is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "invalid email address",
+                },
+              }}
+              defaultValue=""
+            />
+
             <Controller
               as={
                 <Form.Field
@@ -54,11 +79,7 @@ const SignUp = (props) => {
                   type="password"
                   error={
                     errors.password && {
-                      content:
-                        (errors.password.type === "required" &&
-                          "This field is required") ||
-                        (errors.password.type === "minLength" &&
-                          "Min length is 8"),
+                      content: errors.password.message,
                       pointing: "below",
                     }
                   }
@@ -67,14 +88,22 @@ const SignUp = (props) => {
               name="password"
               control={control}
               rules={{
-                required: true,
-                minLength: 8,
+                required: "This field is required",
+                minLength: { value: 8, message: "Min length is 8" },
               }}
               defaultValue=""
             />
-            <button className="ui button positive" type="submit">
+
+            <button
+              className={`ui button positive ${
+                props.user.loading ? "loading" : ""
+              }`}
+              type="submit"
+              disabled={props.user.loading}
+            >
               Sing Up
             </button>
+
             <button
               type="button"
               className="ui button"

@@ -1,4 +1,11 @@
-import { LOG_IN_FINISHED, LOG_OUT, LOG_IN_FAILED, TRY_LOG_IN, SIGN_IN_FAILED } from "./types";
+import {
+  LOG_IN_FINISHED,
+  LOG_OUT,
+  LOG_IN_FAILED,
+  TRY_LOG_IN,
+  SIGN_IN_FAILED,
+  LOG_OUT_FINISHED,
+} from "./types";
 
 const initialState = {
   user: {
@@ -33,7 +40,7 @@ const authReducer = (state = initialState, action) => {
         authError: action.payload,
         loading: false,
       };
-    case LOG_OUT:
+    case LOG_OUT_FINISHED:
       return { isLoggedIn: false, loading: false };
 
     default:

@@ -34,7 +34,7 @@ const StoreItem = props => {
         </span>
         <span>
           <i className="user icon"></i>
-          75 Items
+          {props.store.items.length} Items
         </span>
       </div>
     </div>

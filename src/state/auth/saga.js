@@ -6,6 +6,8 @@ import {
   SIGN_UP,
   LOG_IN_FAILED,
   TRY_LOG_IN,
+  LOG_OUT,
+  LOG_OUT_FINISHED,
 } from "./types";
 import history from "../../utils/history";
 
@@ -14,7 +16,10 @@ function* logIn(action) {
     yield put({ type: TRY_LOG_IN });
     let { data } = yield call(() => {
       return api
-        .post("/login", { handlerEnabled: true, userData: action.payload.userData })
+        .post("/login", {
+          handlerEnabled: true,
+          userData: action.payload.userData,
+        })
         .catch((err) => {
           throw err.response.data.message;
         });
@@ -33,6 +38,7 @@ function* logIn(action) {
 }
 
 function* singUp(action) {
+  yield put({ type: TRY_LOG_IN });
   try {
     let { data } = yield call(() => {
       return api
@@ -44,12 +50,23 @@ function* singUp(action) {
 
     yield put({
       type: LOG_IN,
-      payload: { userData:{username: data.username, password: data.password }},
+      payload: {
+        userData: { username: data.username, password: data.password },
+      },
     });
   } catch (err) {}
+}
+
+function* logOut() {
+  if (localStorage.getItem("user")) {
+    localStorage.removeItem("user");
+  }
+  history.push("/dashboard/home");
+  yield put({ type: LOG_OUT_FINISHED });
 }
 
 export function* watchLogin() {
   yield takeLatest(LOG_IN, logIn);
   yield takeLatest(SIGN_UP, singUp);
+  yield takeLatest(LOG_OUT, logOut);
 }

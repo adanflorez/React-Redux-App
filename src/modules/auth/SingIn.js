@@ -22,7 +22,7 @@ const SingIn = (props) => {
       <div className="form-container">
         <h2>Sign In</h2>
         <div className="ui divider"></div>
-        
+
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Controller
             as={
@@ -30,14 +30,13 @@ const SingIn = (props) => {
                 control={Input}
                 label="Username"
                 placeholder="Username"
-                disabled={props.user.username!==undefined}
+                disabled={props.user.username !== undefined}
                 error={
                   errors.name && {
                     content: "This field is required",
                     pointing: "below",
                   }
                 }
-              
               />
             }
             name="username"
@@ -74,8 +73,15 @@ const SingIn = (props) => {
             }}
             defaultValue=""
           />
-          <button className="ui button positive" type="submit">
-            Sing Up
+
+          <button
+            className={`ui button positive ${
+              props.user.loading ? "loading" : ""
+            }`}
+            type="submit"
+            disabled={props.user.loading}
+          >
+            Sing In
           </button>
         </Form>
       </div>

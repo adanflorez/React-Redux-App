@@ -58,7 +58,7 @@ const NavMenu = (props) => {
           {props.user.isLoggedIn && (
             <Dropdown item text={props.user.username}>
               <Dropdown.Menu>
-                <Dropdown.Item>
+                <Dropdown.Item onClick={()=>{history.push('/dashboard/account/basicinfo')}}>
                   <Icon name="user" /> Account
                 </Dropdown.Item>
                 <Dropdown.Item onClick={onLogOut}>

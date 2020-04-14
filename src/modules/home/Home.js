@@ -67,9 +67,9 @@ const Home = () => {
         <b>Cloud:</b>
       </p>
       <ul>
+        <li>Email confirm</li>
         <li>Errors login form</li>
-        <li>Password enc</li>
-        <li>Define jwt enpoints</li>
+        <li>Pagination</li>
       </ul>
     </div>
   );

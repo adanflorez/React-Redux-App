@@ -1,14 +1,14 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { fetchAllStores, fetchOwnStores } from "../../state/store/actions";
-import { Menu, Segment, Input, Button } from "semantic-ui-react";
+import { Menu, Segment, Input, Button, Pagination } from "semantic-ui-react";
 import _ from "lodash";
 
 import history from "../../utils/history";
 // Components
 import StoreList from "./StoreList";
 
-const StoreMainPage = props => {
+const StoreMainPage = (props) => {
   const [option, setOption] = useState("all");
   const [filter, setFilter] = useState("");
   let tabs;
@@ -52,12 +52,12 @@ const StoreMainPage = props => {
       return props.store.stores;
     }
 
-    return _.filter(props.store.stores, function(o) {
+    return _.filter(props.store.stores, function (o) {
       let str = o.name.toLowerCase();
       var pos = str.search(filter);
       let strDes = o.description.toLowerCase();
       var posDes = strDes.search(filter);
-      return pos!==-1 || posDes!==-1
+      return pos !== -1 || posDes !== -1;
     });
   };
 
@@ -80,7 +80,7 @@ const StoreMainPage = props => {
                 transparent
                 icon={{ name: "search", link: true }}
                 placeholder="Search stores..."
-                onChange={e => {
+                onChange={(e) => {
                   setFilter(e.target.value);
                 }}
               />
@@ -91,21 +91,27 @@ const StoreMainPage = props => {
         </Menu>
 
         <Segment attached="bottom">
-          <StoreList stores={returFilteredStores()} loading={props.store.loading} />
+          <StoreList
+            stores={returFilteredStores()}
+            loading={props.store.loading}
+          />
+          <br />
+
+          <Pagination defaultActivePage={5} totalPages={10} />
         </Segment>
       </div>
     </div>
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { store: state.store, user: state.user };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchAllStores: () => dispatch(fetchAllStores()),
-    fetchOwnStores: userId => dispatch(fetchOwnStores(userId))
+    fetchOwnStores: (userId) => dispatch(fetchOwnStores(userId)),
   };
 };
 

@@ -19,7 +19,6 @@ const requestHandler = async (request) => {
       var now = moment();
       var expiration = moment(user.expiration);
 
-
       if (expiration.diff(now) <= 0) {
         const api = axios.create({ baseURL: "http://localhost:5000" });
         api.defaults.headers.common[
@@ -47,13 +46,12 @@ const errorHandler = (error) => {
         let currentUrl = history.location.pathname;
         history.push("/dashboard/signin?comefrom=" + currentUrl);
         break;
-      case 404:
-        message = "Recurso no encontrado";
-        break;
       default:
-        message = "Ha ocurrido un error";
+        message = error.response.message;
         break;
     }
+    message = error.response.data.Message;
+
     if (message) {
       Swal.fire({
         title: "Error!",
