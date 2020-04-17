@@ -1,7 +1,7 @@
 import api from "../../api/api";
 import { takeLatest, put, call, select, delay } from "redux-saga/effects";
 import {
-  FETCH_ALL,
+  FETCH_STORES,
   LOAD_ALL,
   FETCH_OWN,
   FETCH_STORE,
@@ -20,28 +20,33 @@ import history from "../../utils/history";
 
 /////// Generators ///////
 // Get all stores
-function* fetchAll() {
+function* fetchStores(action) {
   try {
     yield put({ type: START_LOADING });
 
+    let pagination = action.payload;
+
     let { data } = yield call(() => {
-      return api.get("/stores", { handlerEnabled: true });
+      return api.get("/stores", {
+        handlerEnabled: true,
+        params: { pagination },
+      });
     });
     yield put({ type: LOAD_ALL, payload: data.stores });
   } catch (err) {}
 }
 
 // Get user stores
-function* fetchOwn() {
+function* fetchOwn(action) {
   try {
     yield put({ type: START_LOADING });
 
-    const getUser = (state) => state.user;
-    const user = yield select(getUser);
+    let pagination = action.payload;
 
     let { data } = yield call(() => {
       return api.get("/ownstores", {
         handlerEnabled: true,
+        params: { pagination },
       });
     });
     yield put({ type: LOAD_ALL, payload: data.stores });
@@ -57,7 +62,15 @@ function* fetcStore(action) {
       return api.get(`/store/${action.payload}`, { handlerEnabled: true });
     }, action.payload);
 
-    yield put({ type: LOAD_ALL, payload: [data] });
+    let payload = {
+      list: [data],
+      pagination: {
+        page: 1,
+        pages: 0,
+      },
+    };
+
+    yield put({ type: LOAD_ALL, payload });
   } catch (err) {}
 }
 
@@ -65,8 +78,7 @@ function* fetcStore(action) {
 function* saveStore(action) {
   try {
     yield put({ type: START_LOADING });
-
-    let { data } = yield call(() => {
+    yield call(() => {
       return api.post(`/store`, {
         handlerEnabled: true,
         storeData: action.payload,
@@ -81,7 +93,7 @@ function* updateStore(action) {
   try {
     yield put({ type: START_LOADING });
 
-    let { status } = yield call(() => {
+    yield call(() => {
       return api.put(`/store/${action.payload.id}`, {
         handlerEnabled: true,
         storeData: action.payload,
@@ -96,7 +108,7 @@ function* deleteStore(action) {
   try {
     yield put({ type: START_LOADING });
 
-    let { status } = yield call(() => {
+    yield call(() => {
       return api.delete(`/store/${action.payload}`, { handlerEnabled: true });
     });
     history.push("/dashboard/store");
@@ -150,7 +162,7 @@ function* deleteItem(action) {
 
 export function* watchFetchAll() {
   //Stores
-  yield takeLatest(FETCH_ALL, fetchAll);
+  yield takeLatest(FETCH_STORES, fetchStores);
   yield takeLatest(FETCH_OWN, fetchOwn);
   yield takeLatest(FETCH_STORE, fetcStore);
   yield takeLatest(SAVE_STORE, saveStore);

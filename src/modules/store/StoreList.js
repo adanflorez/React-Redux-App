@@ -11,6 +11,7 @@ const renderStores = stores => {
 };
 
 const StoreList = ({ stores, loading }) => {
+
   if (loading) {
     let amoutOfCards = [1, 2, 3];
 

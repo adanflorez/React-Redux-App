@@ -1,5 +1,5 @@
 import {
-  FETCH_ALL,
+  FETCH_STORES,
   FETCH_OWN,
   FETCH_STORE,
   SAVE_STORE,
@@ -13,12 +13,12 @@ import {
 import { LOAD_ALL } from "./types";
 
 //Stores
-export const fetchAllStores = () => {
-  return { type: FETCH_ALL };
+export const fetchStores = (pagination) => {
+  return { type: FETCH_STORES, payload:pagination };
 };
 
-export const fetchOwnStores = userId => {
-  return { type: FETCH_OWN, payload: userId };
+export const fetchOwnStores = (pagination) => {
+  return { type: FETCH_OWN, payload: pagination };
 };
 
 export const fetchStore = storeId => {

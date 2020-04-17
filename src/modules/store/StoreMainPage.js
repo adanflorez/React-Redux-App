@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { fetchAllStores, fetchOwnStores } from "../../state/store/actions";
+import { fetchStores, fetchOwnStores } from "../../state/store/actions";
 import { Menu, Segment, Input, Button, Pagination } from "semantic-ui-react";
 import _ from "lodash";
 
@@ -8,7 +8,11 @@ import history from "../../utils/history";
 // Components
 import StoreList from "./StoreList";
 
+import { useTranslation } from "react-i18next";
+
 const StoreMainPage = (props) => {
+  const { t } = useTranslation();
+
   const [option, setOption] = useState("all");
   const [filter, setFilter] = useState("");
   let tabs;
@@ -16,9 +20,9 @@ const StoreMainPage = (props) => {
 
   useEffect(() => {
     if (option === "all") {
-      props.fetchAllStores();
+      props.fetchStores(props.store.stores.pagination);
     } else {
-      props.fetchOwnStores();
+      props.fetchOwnStores(props.store.stores.pagination);
     }
   }, [option]);
 
@@ -28,11 +32,9 @@ const StoreMainPage = (props) => {
 
   if (props.user.isLoggedIn === true) {
     tabs = (
-      <Menu.Item
-        name="own"
-        active={option === "own"}
-        onClick={handleTabClick}
-      />
+      <Menu.Item name="own" active={option === "own"} onClick={handleTabClick}>
+        {t("modules.store.nav.own", "Own")}
+      </Menu.Item>
     );
     options = (
       <Menu.Item>
@@ -41,18 +43,21 @@ const StoreMainPage = (props) => {
             history.push(`${props.match.path}/new`);
           }}
         >
-          <i className="plus icon"></i> New
+          <i className="plus icon"></i>
+          {t("form.buttons.new", "New")}
         </Button>
       </Menu.Item>
     );
   }
 
   const returFilteredStores = () => {
+    console.log("stores", props.store.stores);
+
     if (!(filter.length > 0)) {
-      return props.store.stores;
+      return props.store.stores.list;
     }
 
-    return _.filter(props.store.stores, function (o) {
+    return _.filter(props.store.stores.list, function (o) {
       let str = o.name.toLowerCase();
       var pos = str.search(filter);
       let strDes = o.description.toLowerCase();
@@ -61,46 +66,68 @@ const StoreMainPage = (props) => {
     });
   };
 
+  const onPageChange = (e, { activePage }) => {
+    let pagination = props.store.stores.pagination;
+    pagination.page = activePage;
+    props.fetchStores(pagination);
+  };
+
   return (
-    <div>
-      <div>
-        <Menu attached="top" tabular>
-          <Menu.Item
-            name="all"
-            active={true}
-            active={option === "all"}
-            onClick={handleTabClick}
-          />
-          {tabs}
+    <>
+      <Menu attached="top" tabular>
+        <Menu.Item
+          name="all"
+          active={true}
+          active={option === "all"}
+          onClick={handleTabClick}
+        >
+          {t("modules.store.nav.all", "All")}
+        </Menu.Item>
+        {tabs}
 
-          <Menu.Menu position="right">
-            <Menu.Item className="big-screen-component ">
-              <Input
-                type="text"
-                transparent
-                icon={{ name: "search", link: true }}
-                placeholder="Search stores..."
-                onChange={(e) => {
-                  setFilter(e.target.value);
-                }}
-              />
-            </Menu.Item>
+        <Menu.Menu position="right">
+          <Menu.Item className="big-screen-component ">
+            <Input
+              type="text"
+              transparent
+              icon={{ name: "search", link: true }}
+              placeholder={t(
+                "modules.store.nav.searchstores",
+                "Search stores..."
+              )}
+              onChange={(e) => {
+                setFilter(e.target.value);
+              }}
+            />
+          </Menu.Item>
 
-            {options}
-          </Menu.Menu>
-        </Menu>
+          {options}
+        </Menu.Menu>
+      </Menu>
 
-        <Segment attached="bottom">
-          <StoreList
-            stores={returFilteredStores()}
-            loading={props.store.loading}
-          />
-          <br />
+      <Segment attached="bottom">
+        <StoreList
+          stores={returFilteredStores()}
+          loading={props.store.loading}
+        />
+        <br />
 
-          <Pagination defaultActivePage={5} totalPages={10} />
-        </Segment>
-      </div>
-    </div>
+        {props.store.stores.pagination && (
+          <div style={{ textAlign: "center" }}>
+            <Pagination
+              boundaryRange={0}
+              ellipsisItem={null}
+              firstItem={null}
+              lastItem={null}
+              siblingRange={1}
+              activePage={props.store.stores.pagination.page}
+              onPageChange={onPageChange}
+              totalPages={props.store.stores.pagination.pages}
+            />
+          </div>
+        )}
+      </Segment>
+    </>
   );
 };
 
@@ -110,8 +137,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchAllStores: () => dispatch(fetchAllStores()),
-    fetchOwnStores: (userId) => dispatch(fetchOwnStores(userId)),
+    fetchStores: (pagination) => dispatch(fetchStores(pagination)),
+    fetchOwnStores: (pagination) => dispatch(fetchOwnStores(pagination)),
   };
 };
 

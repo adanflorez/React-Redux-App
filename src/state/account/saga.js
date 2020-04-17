@@ -14,6 +14,7 @@ import {
 } from "./types";
 
 import { LOG_IN_FINISHED, LOG_OUT } from "../auth/types";
+import Swal from "sweetalert2";
 
 function* getUserInfo() {
   try {
@@ -60,6 +61,15 @@ function* changeEmail(action) {
         userEmail: action.payload,
       });
     });
+
+    Swal.fire({
+      title: "Informarion",
+      text: "Please confirm your email",
+      icon: "info",
+      confirmButtonText: "Aceptar",
+    });
+
+    yield put({ type: LOG_OUT });
 
     yield put({ type: STOP_LOADING });
   } catch {

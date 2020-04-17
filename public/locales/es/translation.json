@@ -1,0 +1,111 @@
+{
+  "modules": {
+    "navbar": {
+      "home": "Home",
+      "store": "Store",
+      "signin": "Sign In",
+      "signup": "Registrarse",
+      "account": "Cuenta",
+      "logout": "Salir"
+    },
+    "signin": {
+      "tittle": "Iniciar sesión",
+      "form": {
+        "label": {
+          "username-email": "Nombre de usuario o Email",
+          "password": "Contraseña"
+        },
+        "buttons": {
+          "signin": "Iniciar sesión"
+        }
+      }
+    },
+    "signup": {
+      "tittle": "Registrarse",
+      "form": {
+        "label": {
+          "username": "Nombre de usuario",
+          "email": "Email",
+          "password": "Contraseña"
+        },
+        "buttons": {
+          "signup": "Registrarse"
+        }
+      }
+    },
+    "store": {
+      "tittle": "Store",
+      "nav": { "all": "Todos", "own": "Propios", "searchstores": "Busca..." },
+      "form": {
+        "label": { "name": "Nombre", "description": "Descripción" }
+      }
+    },
+    "item": {
+      "tittle": "Item",
+      "tittle-creation": "Creación de item",
+      "form": {
+        "label": {
+          "name": "Nombre",
+          "description": "Descripción",
+          "price": "Precio"
+        }
+      }
+    },
+
+    "account": {
+      "basic-info": {
+        "itemlabel": "Informacion Basica",
+        "tittle": "Informacion Basica",
+        "form": {
+          "label": {
+            "name": "Nombre",
+            "email": "Email"
+          }
+        }
+      },
+      "security": {
+        "itemlabel": "Seguridad",
+        "tittle": "Seguridad",
+        "password": {
+          "tittle": "Contraseña",
+          "form": {
+            "label": {
+              "currentpassword": "Contraseña actual",
+              "newpassword": "Nueva Contraseña",
+              "confirm-newpassword": "Confirmar Nueva Contraseña"
+            }
+          }
+        }
+      },
+      "account": {
+        "itemlabel": "Cuenta",
+        "tittle": "Cuenta",
+        "form": {
+          "buttons": { "delete-account": "Eliminar Cuenta" }
+        }
+      }
+    }
+  },
+  "form": {
+    "validationmessages": {
+      "requiredfield": "Este campo es obligatorio",
+      "minlength": "Minima longitud es ",
+      "invalidemail": "Email invalido",
+      "actionforbidden": "Acciòn no permitida"
+    },
+    "tittles": {
+      "new": "Nuevo",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "buttons": {
+      "back": "Atras",
+      "save": "Guardar",
+      "delete": "Eliminar",
+      "new": "Nuevo",
+      "cancel": "Cancelar",
+      "remove": "Eliminar",
+      "edit": "Editar"
+    }
+  }
+}

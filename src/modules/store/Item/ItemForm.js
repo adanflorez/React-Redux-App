@@ -9,7 +9,11 @@ import { saveItem, updateItem, deleteItem } from "../../../state/store/actions";
 
 import "react-image-crop/dist/ReactCrop.css";
 
+import { useTranslation } from "react-i18next";
+
 const ItemForm = (props) => {
+  const { t } = useTranslation();
+
   const [preview, setPreview] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
   const [crop, setCrop] = useState({ aspect: 4 / 4 });
@@ -66,7 +70,6 @@ const ItemForm = (props) => {
   };
 
   const getCroppedImg = (image, crop) => {
-
     const canvas = document.createElement("canvas");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
@@ -116,12 +119,12 @@ const ItemForm = (props) => {
     props.deleteItem(itemId);
     closeModal();
   };
-    const { register, errors, handleSubmit } = useForm();
+  const { register, errors, handleSubmit } = useForm();
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <Modal open={props.open}>
-      <Modal.Header>Item Creation</Modal.Header>
+      <Modal.Header>{t("modules.item.tittle-creation", "Item Creation")}</Modal.Header>
       <Modal.Content>
         <form
           className={`ui form ${errors && "error"}`}
@@ -206,21 +209,21 @@ const ItemForm = (props) => {
                         className="ui button"
                         type="button"
                       >
-                        Remove
+                        {t("form.buttons.remove", "Remove")}
                       </button>
                     </Grid.Column>
                   </Grid.Row>
                 </Grid>
               </Grid.Column>
               <Grid.Column width={8}>
-                <h3>Item</h3>
+                <h3>{t("modules.item.tittle", "Item")}</h3>
                 <div className="ui divider"></div>
                 <div className="field">
-                  <label>Name</label>
+                  <label>{t("modules.item.form.label.name", "Name")}</label>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Name"
+                    placeholder={t("modules.item.form.label.name", "Name")}
                     defaultValue={props.item.name}
                     ref={register({ required: true })}
                     // disabled={props.loading}
@@ -229,17 +232,17 @@ const ItemForm = (props) => {
                 {/* Name validation message */}
                 {errors.name && errors.name.type === "required" && (
                   <div className="ui error message">
-                    <div className="header">Action Forbidden</div>
-                    <p>This field is required.</p>
+                    <div className="header">{t("form.validationmessages.actionforbidden", "Action forbidden")}</div>
+                  <p>{t("form.validationmessages.requiredfield", "This field is required")}</p>
                   </div>
                 )}
 
                 <div className="field">
-                  <label>Description</label>
+                  <label>{t("modules.item.form.label.description", "Description")}</label>
                   <input
                     type="text"
                     name="description"
-                    placeholder="Description"
+                    placeholder={t("modules.item.form.label.description", "Description")}
                     defaultValue={props.item.description}
                     ref={register({ required: true })}
                     // disabled={props.loading}
@@ -248,16 +251,16 @@ const ItemForm = (props) => {
                 {/* Description validation message */}
                 {errors.description && errors.description.type === "required" && (
                   <div className="ui error message">
-                    <div className="header">Action Forbidden</div>
-                    <p>This field is required.</p>
+                    <div className="header">{t("form.validationmessages.actionforbidden", "Action forbidden")}</div>
+                  <p>{t("form.validationmessages.requiredfield", "This field is required")}</p>
                   </div>
                 )}
                 <div className="field">
-                  <label>Price</label>
+                  <label>{t("modules.item.form.label.price", "Price")}</label>
                   <input
                     type="number"
                     name="price"
-                    placeholder="Price"
+                    placeholder={t("modules.item.form.label.price", "Price")}
                     defaultValue={props.item.price}
                     ref={register({ required: true })}
                     // disabled={props.loading}
@@ -266,8 +269,8 @@ const ItemForm = (props) => {
                 {/* Price validation message */}
                 {errors.price && errors.price.type === "required" && (
                   <div className="ui error message">
-                    <div className="header">Action Forbidden</div>
-                    <p>This field is required.</p>
+                    <div className="header">{t("form.validationmessages.actionforbidden", "Action forbidden")}</div>
+                  <p>{t("form.validationmessages.requiredfield", "This field is required")}</p>
                   </div>
                 )}
 
@@ -276,7 +279,7 @@ const ItemForm = (props) => {
                   className="ui button"
                   type="button"
                 >
-                  Cancel
+                  {t("form.buttons.cancel", "Cancel")}
                 </button>
 
                 <button
@@ -294,7 +297,7 @@ const ItemForm = (props) => {
                   positive
                   labelPosition="right"
                   icon="checkmark"
-                  content="Save"
+                  content={t("form.buttons.save", "Save")}
                 />
               </Grid.Column>
             </Grid.Row>

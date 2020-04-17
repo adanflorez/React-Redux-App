@@ -8,74 +8,11 @@ import itemImage from "../../assets/images/item.png";
 import PhotoUploadModal from "../../shared/modals/PhotoUploadModal";
 import ItemForm from "./Item/ItemForm";
 
-const renderTittle = (props) => {
-  if (!props.name) {
-    return <h1>New</h1>;
-  } else {
-    return <h1>Edit</h1>;
-  }
-};
-
-const renderItems = (items, editItem, loading) => {
-  if (!items) {
-    return <div></div>;
-  }
-
-  let storeItems = items.map((item) => {
-    return (
-      <Item key={item.id}>
-        {item.image && <Item.Image size="tiny" src={item.image} rounded />}
-        {!item.image && <Item.Image size="tiny" src={itemImage} rounded />}
-
-        <Item.Content>
-          <Item.Header>{item.name}</Item.Header>
-          <Item.Meta>
-            <span className="price">${item.price}</span>
-          </Item.Meta>
-          <Item.Description>{item.description}</Item.Description>
-          <Item.Extra>
-            <button
-              onClick={() => {
-                editItem(item);
-              }}
-              className="ui icon button"
-              type="button"
-              style={{ float: "right" }}
-            >
-              <i className="edit icon"></i>
-            </button>
-          </Item.Extra>
-        </Item.Content>
-      </Item>
-    );
-  });
-
-  return (
-    <>
-      {storeItems}
-      <Item>
-        <Item.Content verticalAlign="middle">
-          <Item.Extra>
-            <button
-              onClick={() => {
-                editItem();
-              }}
-              className="ui icon button"
-              type="button"
-              style={{ float: "right" }}
-              disabled={loading}
-            >
-              New Item
-              <i className="plus icon"></i>
-            </button>
-          </Item.Extra>
-        </Item.Content>
-      </Item>
-    </>
-  );
-};
+import { useTranslation } from "react-i18next";
 
 const StoreForm = (props) => {
+  const { t } = useTranslation();
+
   const { register, handleSubmit, errors } = useForm();
   const [image, setImage] = useState(undefined);
   const [itemFormOpen, setItemFormOpen] = useState(false);
@@ -103,6 +40,74 @@ const StoreForm = (props) => {
       setItem({});
     }
   };
+
+  const renderTittle = (props) => {
+    if (!props.name) {
+      return <h1>New</h1>;
+    } else {
+      return <h1>Edit</h1>;
+    }
+  };
+
+  const renderItems = (items, editItem, loading) => {
+    if (!items) {
+      return <div></div>;
+    }
+
+    let storeItems = items.map((item) => {
+      return (
+        <Item key={item.id}>
+          {item.image && <Item.Image size="tiny" src={item.image} rounded />}
+          {!item.image && <Item.Image size="tiny" src={itemImage} rounded />}
+
+          <Item.Content>
+            <Item.Header>{item.name}</Item.Header>
+            <Item.Meta>
+              <span className="price">${item.price}</span>
+            </Item.Meta>
+            <Item.Description>{item.description}</Item.Description>
+            <Item.Extra>
+              <button
+                onClick={() => {
+                  editItem(item);
+                }}
+                className="ui icon button"
+                type="button"
+                style={{ float: "right" }}
+              >
+                <i className="edit icon"></i>
+              </button>
+            </Item.Extra>
+          </Item.Content>
+        </Item>
+      );
+    });
+
+    return (
+      <>
+        {storeItems}
+        <Item>
+          <Item.Content verticalAlign="middle">
+            <Item.Extra>
+              <button
+                onClick={() => {
+                  editItem();
+                }}
+                className="ui icon button"
+                type="button"
+                style={{ float: "right" }}
+                disabled={loading}
+              >
+                {t("form.buttons.new", "New")}
+                <i className="plus icon"></i>
+              </button>
+            </Item.Extra>
+          </Item.Content>
+        </Item>
+      </>
+    );
+  };
+
   return (
     <>
       <ItemForm
@@ -163,7 +168,7 @@ const StoreForm = (props) => {
               <div className="ui divider"></div>
 
               <div className="field">
-                <label>First Name</label>
+                <label>{t("modules.store.form.label.name", "Name")}</label>
                 <input
                   type="text"
                   name="name"
@@ -175,13 +180,13 @@ const StoreForm = (props) => {
               </div>
               {errors.name && errors.name.type === "required" && (
                 <div className="ui error message">
-                  <div className="header">Action Forbidden</div>
-                  <p>This field is required.</p>
+                  <div className="header">{t("form.validationmessages.actionforbidden", "Action forbidden")}</div>
+                  <p>{t("form.validationmessages.requiredfield", "This field is required")}</p>
                 </div>
               )}
 
               <div className="field">
-                <label>Description</label>
+                <label>{t("modules.store.form.label.description", "Description")}</label>
                 <input
                   type="text"
                   name="description"
@@ -194,8 +199,8 @@ const StoreForm = (props) => {
 
               {errors.description && errors.description.type === "required" && (
                 <div className="ui error message">
-                  <div className="header">Action Forbidden</div>
-                  <p>This field is required.</p>
+                  <div className="header">{t("form.validationmessages.actionforbidden", "Action forbidden")}</div>
+                  <p>{t("form.validationmessages.requiredfield", "This field is required")}</p>
                 </div>
               )}
 
@@ -219,7 +224,7 @@ const StoreForm = (props) => {
                 type="submit"
                 disabled={props.loading}
               >
-                Save
+                {t("form.buttons.save", "Save")}
               </button>
               <button
                 className="ui button"
@@ -232,7 +237,7 @@ const StoreForm = (props) => {
                 disabled={props.loading}
               >
                 <i className="arrow left icon"></i>
-                Back
+                {t("form.buttons.back", "Back")}
               </button>
             </Grid.Column>
           </Grid.Row>

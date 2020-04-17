@@ -1,5 +1,10 @@
-import { LOG_IN, LOG_OUT, SIGN_UP } from "./types";
-import { LOG_IN_FINISHED } from "./types";
+import {
+  LOG_IN,
+  LOG_OUT,
+  SIGN_UP,
+  RESET_ERROR,
+  LOG_IN_FINISHED,
+} from "./types";
 
 export const logIn = (userData) => {
   return { type: LOG_IN, payload: userData };
@@ -15,4 +20,8 @@ export const signUp = (userData) => {
 
 export const logInFinished = (user) => {
   return { type: LOG_IN_FINISHED, payload: user };
+};
+
+export const resetError = () => {
+  return { type: RESET_ERROR };
 };

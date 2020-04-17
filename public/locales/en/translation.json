@@ -1,0 +1,110 @@
+{
+  "modules": {
+    "navbar": {
+      "home": "Home",
+      "store": "Store",
+      "signin": "Sign In",
+      "signup": "Sign Up",
+      "account": "Account",
+      "logout": "Log Out"
+    },
+    "signin": {
+      "tittle": "Sign In",
+      "form": {
+        "label": {
+          "username-email": "Username o Email",
+          "password": "Password"
+        },
+        "buttons": {
+          "signin": "Sign In"
+        }
+      }
+    },
+    "signup": {
+      "tittle": "Sign Up",
+      "form": {
+        "label": {
+          "username": "Name",
+          "email": "Email",
+          "password": "Password"
+        },
+        "buttons": {
+          "signup": "Sign Up"
+        }
+      }
+    },
+    "store": {
+      "tittle": "Store",
+      "nav": { "all": "All", "own": "Own", "searchstores": "Search Stores" },
+      "form": {
+        "label": { "name": "Name", "description": "Description" }
+      }
+    },
+    "item": {
+      "tittle": "Item",
+      "tittle-creation": "Item Creation",
+      "form": {
+        "label": {
+          "name": "Name",
+          "description": "Description",
+          "price": "Price"
+        }
+      }
+    },
+    "account": {
+      "basic-info": {
+        "itemlabel": "Basic Info",
+        "tittle": "Basic Info",
+        "form": {
+          "label": {
+            "name": "Name",
+            "email": "Email"
+          }
+        }
+      },
+      "security": {
+        "itemlabel": "Security",
+        "tittle": "Security",
+        "password": {
+          "tittle": "Password",
+          "form": {
+            "label": {
+              "currentpassword": "Current Password",
+              "newpassword": "New Password",
+              "confirm-newpassword": "Confirm New Password"
+            }
+          }
+        }
+      },
+      "account": {
+        "itemlabel": "Account",
+        "tittle": "Account",
+        "form": {
+          "buttons": { "delete-account": "Delete Account" }
+        }
+      }
+    }
+  },
+  "form": {
+    "validationmessages": {
+      "requiredfield": "This field is required",
+      "minlength": "Min length is ",
+      "invalidemail": "Invalid email",
+      "actionforbidden": "Action Forbidden"
+    },
+    "tittles": {
+      "new": "New",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "buttons": {
+      "back": "Back",
+      "save": "Save",
+      "delete": "Delete",
+      "new": "New",
+      "cancel": "Cancel",
+      "remove": "Remove",
+      "edit": "Edit"
+    }
+  }
+}

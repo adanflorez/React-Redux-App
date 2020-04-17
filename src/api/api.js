@@ -4,9 +4,29 @@ import Swal from "sweetalert2";
 import history from "../utils/history";
 
 const isHandlerEnabled = (config = {}) => {
-  return config.hasOwnProperty("handlerEnabled") && !config.handlerEnabled
-    ? false
-    : true;
+  let result;
+
+  result =
+    config.hasOwnProperty("handlerEnabled") && config.handlerEnabled
+      ? true
+      : false;
+
+  if (result === false) {
+    result =
+      config.data.hasOwnProperty("handlerEnabled") && config.data.handlerEnabled
+        ? true
+        : false;
+  }
+
+  if (result === false) {
+    let jsondata = JSON.parse(config.data);
+    result =
+      jsondata.hasOwnProperty("handlerEnabled") && jsondata.handlerEnabled
+        ? true
+        : false;
+  }
+
+  return result;
 };
 
 const requestHandler = async (request) => {
@@ -40,17 +60,20 @@ const requestHandler = async (request) => {
 };
 const errorHandler = (error) => {
   let message;
-  if (isHandlerEnabled(error.config)) {
+  message = error.response.data.message;
+
+  if (isHandlerEnabled(error.response.config)) {
+
     switch (error.response.status) {
       case 401:
+        localStorage.removeItem("user");
         let currentUrl = history.location.pathname;
         history.push("/dashboard/signin?comefrom=" + currentUrl);
         break;
       default:
-        message = error.response.message;
+        message = error.response.data.message;
         break;
     }
-    message = error.response.data.Message;
 
     if (message) {
       Swal.fire({

@@ -12,7 +12,11 @@ import { logInFinished } from "../state/auth/actions";
 // components
 import ErrorModal from "../shared/modals/ErrorModal";
 
+import { useTranslation } from "react-i18next";
+
 const NavMenu = (props) => {
+  const { t } = useTranslation();
+  
   if (localStorage.getItem("user") && !props.user.isLoggedIn) {
     props.logInFinished(JSON.parse(localStorage.getItem("user")));
   }
@@ -33,6 +37,8 @@ const NavMenu = (props) => {
     setErrorModal(false);
   };
 
+  
+
   return (
     <>
       <ErrorModal
@@ -45,25 +51,29 @@ const NavMenu = (props) => {
 
       <Menu inverted className="nav-menu">
         <NavLink className="item" to="/dashboard/home" activeClassName="active">
-          Home
+          {t("modules.navbar.home", "Home")}
         </NavLink>
         <NavLink
           className="item"
           to="/dashboard/store"
           activeClassName="active"
         >
-          Store
+          {t("modules.navbar.store", "Store")}
         </NavLink>
         <Menu.Menu position="right">
           {props.user.isLoggedIn && (
             <Dropdown item text={props.user.username}>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={()=>{history.push('/dashboard/account/basicinfo')}}>
-                  <Icon name="user" /> Account
+                <Dropdown.Item
+                  onClick={() => {
+                    history.push("/dashboard/account/basicinfo");
+                  }}
+                >
+                  <Icon name="user" /> {t("modules.navbar.account", "Account")}
                 </Dropdown.Item>
                 <Dropdown.Item onClick={onLogOut}>
                   <Icon name="log out" />
-                  Log Out
+                  {t("modules.navbar.logout", "Log out")}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -77,7 +87,7 @@ const NavMenu = (props) => {
                   history.push("/dashboard/signin");
                 }}
               >
-                Sign In
+                {t("modules.navbar.signin", "Sign In")}
               </Button>
             </Menu.Item>
           )}
@@ -89,7 +99,7 @@ const NavMenu = (props) => {
                   history.push("/signup");
                 }}
               >
-                Sign Up
+                {t("modules.navbar.signup", "Sign up")}
               </Button>
             </Menu.Item>
           )}

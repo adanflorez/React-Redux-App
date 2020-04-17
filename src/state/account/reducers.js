@@ -1,7 +1,7 @@
 import { LOAD_USER_INFO, START_LOADING, STOP_LOADING } from "./types";
 
 const initialState = {
-  accounBasictInfo: {},
+  // accounBasictInfo: {},
   loading: false,
 };
 

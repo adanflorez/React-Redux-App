@@ -7,6 +7,7 @@ import { NavLink } from "react-router-dom";
 import BasicInfo from "./BasicInfo";
 import Security from "./Security";
 import AccountConf from "./AccountConf";
+import BasicInfoAccountPlaceHolder from "../../shared/placeholder/BasicInfoAccountPlaceHolder";
 
 import {
   changeName,
@@ -16,7 +17,11 @@ import {
   getUserInfo,
 } from "../../state/account/actions";
 
+import { useTranslation } from "react-i18next";
+
 const Account = (props) => {
+  const { t } = useTranslation();
+
   const ChangeName = (newName) => {
     props.changeName(newName);
   };
@@ -47,21 +52,21 @@ const Account = (props) => {
               to={`${props.match.path}/basicinfo`}
               activeClassName="active"
             >
-              Basic Info
+              {t("modules.account.basic-info.itemlabel", "Basic Info")}
             </NavLink>
             <NavLink
               className="item"
               to={`${props.match.path}/security`}
               activeClassName="active"
             >
-              Security
+              {t("modules.account.security.itemlabel", "Security")}
             </NavLink>
             <NavLink
               className="item"
               to={`${props.match.path}/account`}
               activeClassName="active"
             >
-              Account
+              {t("modules.account.account.itemlabel", "Account")}
             </NavLink>
           </Menu>
         </Grid.Column>
@@ -69,11 +74,14 @@ const Account = (props) => {
         <Grid.Column stretched width={12}>
           <Segment>
             <Route path={`${props.match.path}/basicinfo`}>
-              <BasicInfo
-                ChangeName={ChangeName}
-                ChangeEmail={ChangeEmail}
-                account={props.account}
-              />
+              {props.account.accounBasictInfo && (
+                <BasicInfo
+                  ChangeName={ChangeName}
+                  ChangeEmail={ChangeEmail}
+                  account={props.account}
+                />
+              )}
+              {!props.account.accounBasictInfo && (<BasicInfoAccountPlaceHolder />)}
             </Route>
             <Route path={`${props.match.path}/security`}>
               <Security

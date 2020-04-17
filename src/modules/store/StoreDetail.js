@@ -13,34 +13,12 @@ import ConfirmModal from "../../shared/modals/ConfirmModal";
 // actions
 import { fetchStore, deleteStore, fetchItems } from "../../state/store/actions";
 
-const renderItems = (items) => {
-  if (items.length) {
-    return items.map((item) => {
-      return (
-        <Item key={item.id}>
-          {item.image && <Image size="tiny" src={item.image} rounded />}
-          {!item.image && <Image size="tiny" src={itemImage} rounded />}
-          <Item.Content>
-            <Item.Header>{item.name}</Item.Header>
-            <Item.Meta>
-              <span className="price">${item.price}</span>
-            </Item.Meta>
-            <Item.Description>{item.description}</Item.Description>
-          </Item.Content>
-        </Item>
-      );
-    });
-  } else {
-    return (
-      <Message>
-        <Message.Header>Not items Found!</Message.Header>
-        <p>This store does not have items.</p>
-      </Message>
-    );
-  }
-};
+import { useTranslation } from "react-i18next";
 
 const StoreDetail = (props) => {
+  const { t } = useTranslation();
+    
+
   useEffect(() => {
     props.fetchStore(props.match.params.id);
   }, []);
@@ -57,6 +35,33 @@ const StoreDetail = (props) => {
     return <StoreDetailPlaceHolder />;
   }
   const { id, name, description, image } = props.store;
+
+  const renderItems = (items) => {
+    if (items.length) {
+      return items.map((item) => {
+        return (
+          <Item key={item.id}>
+            {item.image && <Image size="tiny" src={item.image} rounded />}
+            {!item.image && <Image size="tiny" src={itemImage} rounded />}
+            <Item.Content>
+              <Item.Header>{item.name}</Item.Header>
+              <Item.Meta>
+                <span className="price">${item.price}</span>
+              </Item.Meta>
+              <Item.Description>{item.description}</Item.Description>
+            </Item.Content>
+          </Item>
+        );
+      });
+    } else {
+      return (
+        <Message>
+          <Message.Header>Not items Found!</Message.Header>
+          <p>This store does not have items.</p>
+        </Message>
+      );
+    }
+  };
 
   return (
     <Grid divided>
@@ -89,7 +94,7 @@ const StoreDetail = (props) => {
             }}
           >
             <i className="edit left icon"></i>
-            Edit
+            {t("form.buttons.edit", "Edit")}
           </button>
           <ConfirmModal
             onAccept={() => deleteStore(props.store.id)}
@@ -105,7 +110,7 @@ const StoreDetail = (props) => {
               }}
             >
               <i className="trash left icon"></i>
-              Delete
+              {t("form.buttons.delete", "Delete")}
             </button>
           </ConfirmModal>
           <button
@@ -116,7 +121,7 @@ const StoreDetail = (props) => {
             }}
           >
             <i className="arrow left icon"></i>
-            Back
+            {t("form.buttons.back", "Back")}
           </button>
         </Grid.Column>
       </Grid.Row>
@@ -127,7 +132,7 @@ const StoreDetail = (props) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
-    store: _.find(state.store.stores, ["id", +ownProps.match.params.id]),
+    store: _.find(state.store.stores.list, ["id", +ownProps.match.params.id]),
     loading: state.store.loading,
     currentItems: state.store.currentItems,
   };

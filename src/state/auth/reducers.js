@@ -1,10 +1,9 @@
 import {
   LOG_IN_FINISHED,
-  LOG_OUT,
-  LOG_IN_FAILED,
   TRY_LOG_IN,
-  SIGN_IN_FAILED,
   LOG_OUT_FINISHED,
+  LOG_IN_SIGN_IN_FAILED,
+  RESET_ERROR,
 } from "./types";
 
 const initialState = {
@@ -26,14 +25,7 @@ const authReducer = (state = initialState, action) => {
         authError: null,
         loading: false,
       };
-    case LOG_IN_FAILED:
-      return {
-        ...state,
-        isLoggedIn: false,
-        authError: action.payload,
-        loading: false,
-      };
-    case SIGN_IN_FAILED:
+    case LOG_IN_SIGN_IN_FAILED:
       return {
         ...state,
         isLoggedIn: false,
@@ -42,6 +34,8 @@ const authReducer = (state = initialState, action) => {
       };
     case LOG_OUT_FINISHED:
       return { isLoggedIn: false, loading: false };
+    case RESET_ERROR:
+      return { ...state, authError: null };
 
     default:
       return state;

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Divider, Accordion, Icon, Form, Input } from "semantic-ui-react";
 import { useForm, Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 const Security = (props) => {
+  const { t } = useTranslation();
+
   const { handleSubmit, errors, control, watch } = useForm();
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -19,7 +22,7 @@ const Security = (props) => {
 
   return (
     <>
-      <h3>Security</h3>
+      <h3>{t("modules.account.security.tittle", "Security")}</h3>
       <Divider />
       <Accordion styled>
         <Accordion.Title
@@ -28,7 +31,7 @@ const Security = (props) => {
           onClick={handleClick}
         >
           <Icon name="dropdown" />
-          Password
+          {t("modules.account.security.password.tittle", "Password")}
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -36,8 +39,14 @@ const Security = (props) => {
               as={
                 <Form.Field
                   control={Input}
-                  label="Current Password"
-                  placeholder="Current Password"
+                  label={t(
+                    "modules.account.security.password.form.label.currentpassword",
+                    "Current Password"
+                  )}
+                  placeholder={t(
+                    "modules.account.security.password.form.label.currentpassword",
+                    "Current Password"
+                  )}
                   type="password"
                   disabled={props.account.loading}
                   error={
@@ -51,7 +60,7 @@ const Security = (props) => {
               name="currentpassword"
               control={control}
               rules={{
-                required: "This field is required",
+                required:  t("form.validationmessages.requiredfield", "This field is required"),
                 minLength: { value: 8, message: "Min length is 8" },
               }}
               defaultValue=""
@@ -60,8 +69,14 @@ const Security = (props) => {
               as={
                 <Form.Field
                   control={Input}
-                  label="New Password"
-                  placeholder="New Password"
+                  label={t(
+                    "modules.account.security.password.form.label.newpassword",
+                    "New Password"
+                  )}
+                  placeholder={t(
+                    "modules.account.security.password.form.label.newpassword",
+                    "New Password"
+                  )}
                   type="password"
                   disabled={props.account.loading}
                   error={
@@ -75,7 +90,7 @@ const Security = (props) => {
               name="newpassword"
               control={control}
               rules={{
-                required: "This field is required",
+                required:  t("form.validationmessages.requiredfield", "This field is required"),
                 minLength: { value: 8, message: "Min length is 8" },
               }}
               defaultValue=""
@@ -84,8 +99,14 @@ const Security = (props) => {
               as={
                 <Form.Field
                   control={Input}
-                  label="Confirm New Password"
-                  placeholder="Confirm New Password"
+                  label={t(
+                    "modules.account.security.password.form.label.confirm-newpassword",
+                    "Confirm New Password"
+                  )}
+                  placeholder={t(
+                    "modules.account.security.password.form.label.confirm-newpassword",
+                    "Confirm New Password"
+                  )}
                   type="password"
                   disabled={props.account.loading}
                   error={
@@ -99,7 +120,7 @@ const Security = (props) => {
               name="confirmnewpassword"
               control={control}
               rules={{
-                required: "This field is required",
+                required: t("form.validationmessages.requiredfield", "This field is required"),
                 minLength: { value: 8, message: "Min length is 8" },
                 validate: (value) => {
                   if (value === watch("newpassword")) return true;
@@ -115,7 +136,7 @@ const Security = (props) => {
               type="submit"
               disabled={props.account.loading}
             >
-              Save
+              {t("form.buttons.save", "Save")}
             </button>
           </Form>
         </Accordion.Content>

@@ -22,12 +22,16 @@ const Home = () => {
         <li>
           ReactJs
           <ul>
+            <li>axios</li>
+            <li>react-hook-form</li>
+            <li>react-image-crop</li>
+            <li>react-router-dom</li>
+            <li>sweetalert2</li>
             <li>React redux </li>
-            <li>React-router-dom</li>
-            <li>Redux-saga</li>
-            <li>Axios</li>
-            <li>React-image-crop</li>
-            <li>Redux</li>
+            <li>redux-saga</li>
+            <li>react-dropzone</li>
+            <li>moment</li>
+            <li>i18next</li>
           </ul>
         </li>
         <li>Semantic UI</li>
@@ -47,6 +51,14 @@ const Home = () => {
             <li>Flask-JWT-Extended</li>
             <li>Flask-RESTful</li>
             <li>Flask-Migrate</li>
+            <li>requests</li>
+            <li>Flask-Babel</li>
+            <li>Flask-marshmallow</li>
+            <li>Flask-Script</li>
+            <li>Flask-SQLAlchemy</li>
+            <li>Jinja2</li>
+            <li>passlib</li>
+            <li>python-dotenv</li>
           </ul>
         </li>
       </ul>
@@ -61,15 +73,7 @@ const Home = () => {
       </p>
       <ul>
         <li>Cloudinary (Images)</li>
-      </ul>
-
-      <p>
-        <b>Cloud:</b>
-      </p>
-      <ul>
-        <li>Email confirm</li>
-        <li>Errors login form</li>
-        <li>Pagination</li>
+        <li>Mailgun (Email)</li>
       </ul>
     </div>
   );

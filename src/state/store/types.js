@@ -1,5 +1,5 @@
 //Stores
-export const FETCH_ALL = '[STORE] FETCH_ALL';
+export const FETCH_STORES = '[STORE] FETCH_STORES';
 export const FETCH_OWN = '[STORE] FETCH_OWN';
 export const FETCH_STORE = '[STORE] FETCH_STORE';
 export const START_LOADING = '[STORE] START_LOADING';
