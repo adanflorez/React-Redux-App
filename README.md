@@ -2,10 +2,19 @@
 
 ## Description
 This is a react-redux app.
+
 Features:
 
 - JWT Authenticaton.
 - Itercionalization with i18next.
+- Redux saga.
+- Semantic UI React.
+- Axios
+- react-dropzone
+- react-hook-form
+- react-image-crop
+- react-router-dom
+
 
 ## Demo
 To see the full demo click here [Here](http://128.199.43.48/storewebapp/).
