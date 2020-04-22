@@ -8,15 +8,21 @@ import {
   LOG_OUT,
   LOG_OUT_FINISHED,
   LOG_IN_SIGN_IN_FAILED,
+  INIT_LOADER,
+  FINISH_LOADER,
+  SEND_PASS_EMAIL,
+  SEND_CONFIRMATION_EMAIL,
 } from "./types";
 import history from "../../utils/history";
+
+import Swal from "sweetalert2";
 
 function* logIn(action) {
   try {
     yield put({ type: TRY_LOG_IN });
     let { data } = yield call(() => {
       return api.post("/login", {
-        handlerEnabled: true,
+        handlerEnabled: false,
         userData: action.payload.userData,
       });
     });
@@ -36,22 +42,54 @@ function* logIn(action) {
 }
 
 function* singUp(action) {
-  yield put({ type: TRY_LOG_IN });
+  yield put({ type: INIT_LOADER });
   try {
-    let { data } = yield call(() => {
+    yield call(() => {
       return api.post("/usercreate", {
+        handlerEnabled: true,
         userData: action.payload,
       });
     });
 
-    yield put({
-      type: LOG_IN,
-      payload: {
-        userData: { username: data.username, password: data.password },
-      },
-    });
+    history.push("/dashboard/signin");
+
+    yield put({ type: FINISH_LOADER });
   } catch (err) {
-    yield put({ type: LOG_IN_SIGN_IN_FAILED, payload: err.message });
+    yield put({ type: FINISH_LOADER });
+  }
+}
+
+function* sendPassEmail(action) {
+  try {
+    yield put({ type: INIT_LOADER });
+
+    yield call(() => {
+      return api.post("/userresetpassword", {
+        handlerEnabled: true,
+        userData: { email: action.payload },
+      });
+    });
+
+    yield put({ type: FINISH_LOADER });
+    history.push("/dashboard/signin");
+  } catch {
+    yield put({ type: FINISH_LOADER });
+  }
+}
+
+function* sendConfirmationEmail(action) {
+  try {
+    yield put({ type: INIT_LOADER });
+    yield call(() => {
+      return api.post("/userconfirmationemail", {
+        handlerEnabled: true,
+        userData: action.payload.userData,
+      });
+    });
+    yield put({ type: FINISH_LOADER });
+    history.push("/dashboard/signin");
+  } catch {
+    yield put({ type: FINISH_LOADER });
   }
 }
 
@@ -66,5 +104,8 @@ function* logOut() {
 export function* watchLogin() {
   yield takeLatest(LOG_IN, logIn);
   yield takeLatest(SIGN_UP, singUp);
+  yield takeLatest(SEND_PASS_EMAIL, sendPassEmail);
+  yield takeLatest(SEND_CONFIRMATION_EMAIL, sendConfirmationEmail);
+
   yield takeLatest(LOG_OUT, logOut);
 }

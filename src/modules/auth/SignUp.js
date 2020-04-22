@@ -3,7 +3,7 @@ import history from "../../utils/history";
 import { useForm, Controller } from "react-hook-form";
 import "./AuthForm.css";
 
-import { Form, Input, Message } from "semantic-ui-react";
+import { Form, Input } from "semantic-ui-react";
 
 import { signUp, resetError } from "../../state/auth/actions";
 import { connect } from "react-redux";
@@ -12,9 +12,10 @@ import { useTranslation } from "react-i18next";
 
 const SignUp = (props) => {
   const { t } = useTranslation();
-  const { handleSubmit, errors, control } = useForm();
+  const { handleSubmit, errors, control, watch } = useForm();
 
   const onSubmit = (data) => {
+    delete data.confirmpassword;
     props.signUp(data);
   };
 
@@ -35,7 +36,10 @@ const SignUp = (props) => {
                 <Form.Field
                   control={Input}
                   label={t("modules.signup.form.label.username", "Username")}
-                  placeholder={t("modules.signup.form.label.username", "Username")}
+                  placeholder={t(
+                    "modules.signup.form.label.username",
+                    "Username"
+                  )}
                   disabled={props.user.loading}
                   error={
                     errors.username && {
@@ -48,7 +52,10 @@ const SignUp = (props) => {
               name="username"
               control={control}
               rules={{
-                required: t("form.validationmessages.requiredfield", "This field is required"),
+                required: t(
+                  "form.validationmessages.requiredfield",
+                  "This field is required"
+                ),
               }}
               defaultValue=""
             />
@@ -70,10 +77,16 @@ const SignUp = (props) => {
               name="email"
               control={control}
               rules={{
-                required: t("form.validationmessages.requiredfield", "This field is required"),
+                required: t(
+                  "form.validationmessages.requiredfield",
+                  "This field is required"
+                ),
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                  message: t("form.validationmessages.invalidemail", "Invalid Email")
+                  message: t(
+                    "form.validationmessages.invalidemail",
+                    "Invalid Email"
+                  ),
                 },
               }}
               defaultValue=""
@@ -100,16 +113,52 @@ const SignUp = (props) => {
               name="password"
               control={control}
               rules={{
-                required: t("form.validationmessages.requiredfield", "This field is required"),
+                required: t(
+                  "form.validationmessages.requiredfield",
+                  "This field is required"
+                ),
                 minLength: { value: 8, message: "Min length is 8" },
               }}
               defaultValue=""
             />
-            {props.user.authError && (
-              <Message negative>
-                <Message.Header>{props.user.authError}</Message.Header>
-              </Message>
-            )}
+
+            <Controller
+              as={
+                <Form.Field
+                  control={Input}
+                  label={t(
+                    "modules.signup.form.label.confirmpassword",
+                    "Confrim Password"
+                  )}
+                  placeholder={t(
+                    "modules.signup.form.label.confirmpassword",
+                    "Confrim Password"
+                  )}
+                  disabled={props.user.loading}
+                  type="password"
+                  error={
+                    errors.confirmpassword && {
+                      content: errors.confirmpassword.message,
+                      pointing: "below",
+                    }
+                  }
+                />
+              }
+              name="confirmpassword"
+              control={control}
+              rules={{
+                required: t(
+                  "form.validationmessages.requiredfield",
+                  "This field is required"
+                ),
+                minLength: { value: 8, message: "Min length is 8" },
+                validate: (value) => {
+                  if (value === watch("password")) return true;
+                  else return "Password does not match";
+                },
+              }}
+              defaultValue=""
+            />
 
             <button
               className={`ui button positive ${
@@ -126,6 +175,7 @@ const SignUp = (props) => {
               onClick={() => {
                 history.push("/");
               }}
+              disabled={props.user.loading}
             >
               {t("form.buttons.back", "Back")}
             </button>

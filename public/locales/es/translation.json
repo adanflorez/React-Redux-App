@@ -13,10 +13,36 @@
       "form": {
         "label": {
           "username-email": "Nombre de usuario o Email",
-          "password": "Contraseña"
+          "password": "Contraseña",
+          "forgotpassword":"Ha olvidado contraseña?",
+          "resendemail":"Reenviar email de confirmacion"
+
         },
         "buttons": {
           "signin": "Iniciar sesión"
+        }
+      }
+    },
+    "resendemail": {
+      "tittle": "Reenviar email de confirmación",
+      "form": {
+        "label": {
+          "email": "Email",
+          "password": "Contraseña"
+        },
+        "buttons": {
+          "sendemail": "Enviar Email"
+        }
+      }
+    },
+    "restorepassword": {
+      "tittle": "Restaurar contraseña",
+      "form": {
+        "label": {
+          "email": "Email"
+        },
+        "buttons": {
+          "findemail": "Econtrar Email"
         }
       }
     },
@@ -26,7 +52,8 @@
         "label": {
           "username": "Nombre de usuario",
           "email": "Email",
-          "password": "Contraseña"
+          "password": "Contraseña",
+          "confirmpassword":"Confirmar contraseña"
         },
         "buttons": {
           "signup": "Registrarse"
@@ -106,6 +133,11 @@
       "cancel": "Cancelar",
       "remove": "Eliminar",
       "edit": "Editar"
+    }
+  },
+  "modal": {
+    "tittle-message": {
+      "info": "Información"
     }
   }
 }

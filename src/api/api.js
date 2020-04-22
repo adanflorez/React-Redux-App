@@ -4,29 +4,33 @@ import Swal from "sweetalert2";
 import history from "../utils/history";
 
 const isHandlerEnabled = (config = {}) => {
-  let result;
-
-  result =
-    config.hasOwnProperty("handlerEnabled") && config.handlerEnabled
-      ? true
-      : false;
-
-  if (result === false) {
-    result =
-      config.data.hasOwnProperty("handlerEnabled") && config.data.handlerEnabled
-        ? true
-        : false;
+  if (config.hasOwnProperty("handlerEnabled")) {
+    if (config.handlerEnabled) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  if (result === false) {
-    let jsondata = JSON.parse(config.data);
-    result =
-      jsondata.hasOwnProperty("handlerEnabled") && jsondata.handlerEnabled
-        ? true
-        : false;
+  if (config.data.hasOwnProperty("handlerEnabled")) {
+    if (config.data.handlerEnabled) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  return result;
+  let jsondata = JSON.parse(config.data);
+
+  if (jsondata.hasOwnProperty("handlerEnabled")) {
+    if (jsondata.handlerEnabled) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  return false;
 };
 
 const requestHandler = async (request) => {
@@ -63,7 +67,6 @@ const errorHandler = (error) => {
   message = error.response.data.message;
 
   if (isHandlerEnabled(error.response.config)) {
-
     switch (error.response.status) {
       case 401:
         localStorage.removeItem("user");
@@ -90,7 +93,13 @@ const errorHandler = (error) => {
 
 const successHandler = (response) => {
   if (isHandlerEnabled(response.config)) {
-    // Handle responses
+    if (response.data.message) {
+      Swal.fire({
+        text: response.data.message,
+        icon: "info",
+        confirmButtonText: "Ok",
+      });
+    }
   }
   return response;
 };

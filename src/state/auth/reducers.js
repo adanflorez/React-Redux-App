@@ -4,6 +4,8 @@ import {
   LOG_OUT_FINISHED,
   LOG_IN_SIGN_IN_FAILED,
   RESET_ERROR,
+  INIT_LOADER,
+  FINISH_LOADER,
 } from "./types";
 
 const initialState = {
@@ -30,6 +32,16 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: false,
         authError: action.payload,
+        loading: false,
+      };
+    case INIT_LOADER:
+      return {
+        ...action.payload,
+        loading: true,
+      };
+    case FINISH_LOADER:
+      return {
+        ...action.payload,
         loading: false,
       };
     case LOG_OUT_FINISHED:

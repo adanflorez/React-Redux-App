@@ -4,6 +4,8 @@ import {
   SIGN_UP,
   RESET_ERROR,
   LOG_IN_FINISHED,
+  SEND_PASS_EMAIL,
+  SEND_CONFIRMATION_EMAIL
 } from "./types";
 
 export const logIn = (userData) => {
@@ -25,3 +27,14 @@ export const logInFinished = (user) => {
 export const resetError = () => {
   return { type: RESET_ERROR };
 };
+
+export const sendPassEmail = (username) => {
+  return { type: SEND_PASS_EMAIL, payload:username };
+};
+
+export const sendConfirmationEmail = (userData) => {
+  return { type: SEND_CONFIRMATION_EMAIL, payload:userData };
+};
+
+
+

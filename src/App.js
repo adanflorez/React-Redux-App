@@ -14,17 +14,15 @@ import AppStyle from "./AppStyle.css";
 function App() {
   return (
     <>
-      
-        <Router history={history} basename={"/storewebapp"}>
-          <Switch>
-            <Route path="/" exact>
-              <Redirect to="/dashboard" />
-            </Route>
-            <Route path="/dashboard" component={Routes} />
-            <Route path="/signup" component={SignUp} />
-          </Switch>
-        </Router>
-      
+      <Router history={history} basename={"/storewebapp"}>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/dashboard" />
+          </Route>
+          <Route path="/dashboard" component={Routes} />
+          <Route path="/signup" component={SignUp} />
+        </Switch>
+      </Router>
     </>
   );
 }
