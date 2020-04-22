@@ -51,7 +51,6 @@ const StoreMainPage = (props) => {
   }
 
   const returFilteredStores = () => {
-    console.log("stores", props.store.stores);
 
     if (!(filter.length > 0)) {
       return props.store.stores.list;

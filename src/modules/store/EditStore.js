@@ -24,7 +24,6 @@ const EditStoreForm = props => {
     props.updateStore(storeData);
   };
 
-  console.log(props);
   return <StoreForm {...props.store} loading ={props.loading} onSubmitForm={onSubmit} currentItems={props.currentItems}/>;
 };
 
