@@ -1,3 +1,5 @@
+![React-Redux](https://miro.medium.com/proxy/1*VeM-5lsAtrrJ4jXH96h5kg.png)
+
 ## Description
 This is a react-redux app.
 Features:
