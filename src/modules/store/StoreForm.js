@@ -74,6 +74,7 @@ const StoreForm = (props) => {
                 className="ui icon button"
                 type="button"
                 style={{ float: "right" }}
+                disabled={loading}
               >
                 <i className="edit icon"></i>
               </button>

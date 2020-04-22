@@ -11,6 +11,7 @@ import {
   START_LOADING,
   LOAD_USER_INFO,
   STOP_LOADING,
+  REMOVE_USER_INFO
 } from "./types";
 
 import { LOG_IN_FINISHED, LOG_OUT } from "../auth/types";
@@ -61,6 +62,7 @@ function* changeEmail(action) {
       });
     });
 
+    yield put({ type: REMOVE_USER_INFO });
     yield put({ type: LOG_OUT });
 
     yield put({ type: STOP_LOADING });

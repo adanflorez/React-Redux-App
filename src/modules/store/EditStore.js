@@ -23,12 +23,14 @@ const EditStoreForm = props => {
     storeData.id = props.store.id;
     props.updateStore(storeData);
   };
+
+  console.log(props);
   return <StoreForm {...props.store} loading ={props.loading} onSubmitForm={onSubmit} currentItems={props.currentItems}/>;
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    store: _.find(state.store.stores, ["id", +ownProps.match.params.id]),
+    store: _.find(state.store.stores.list, ["id", +ownProps.match.params.id]),
     currentItems: state.store.currentItems,
     loading: state.store.loading
   };

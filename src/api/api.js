@@ -104,9 +104,12 @@ const successHandler = (response) => {
   return response;
 };
 
-// export default axios.create({ baseURL: "http://128.199.43.48/storeapp_webapi" });
+// const axiosInstance = axios.create({
+//   baseURL: "http://localhost:5000",
+// });
+
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://128.199.43.48/storeapp_webapi",
 });
 
 // Add interceptors
