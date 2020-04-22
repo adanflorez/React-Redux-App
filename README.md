@@ -1,6 +1,12 @@
+## Description
+This is a react-redux app.
+Features:
+
+- JWT Authenticaton.
+- Itercionalization with i18next.
+
 ## Demo
 To see the full demo click here [Here](http://128.199.43.48/storewebapp/).
-
 
 
 ## BackEnd API
