@@ -20,6 +20,7 @@ Features:
 To see the full demo click here [Here](http://128.199.43.48/storewebapp/).
 
 username: mr.bonilla51@gmail.com
+
 password: 123456789
 
 ## BackEnd API
